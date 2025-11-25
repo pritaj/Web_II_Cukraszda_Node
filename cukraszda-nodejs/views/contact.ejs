@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kapcsolat - Cukrászda</title>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/css/custom.css" />
+  </head>
+  <body class="is-preload">
+    <%- include('partials/header') %>
+
+    <div id="wrapper" class="divided">
+      <section class="wrapper style1 align-center">
+        <div class="inner medium">
+          <h1>Kapcsolat</h1>
+          <p>Küldjön nekünk üzenetet!</p>
+
+          <% if (typeof success !== 'undefined' && success) { %>
+          <div
+            class="box"
+            style="
+              background: #d4edda;
+              border: 2px solid #c3e6cb;
+              color: #155724;
+              padding: 1em;
+              margin-bottom: 2em;
+              border-radius: 5px;
+            "
+          >
+            <p style="margin: 0">
+              Köszönjük üzenetét! Hamarosan felvesszük Önnel a kapcsolatot.
+            </p>
+          </div>
+          <% } %> <% if (errors && errors.length > 0) { %>
+          <div
+            class="box"
+            style="
+              background: #f8d7da;
+              border: 2px solid #f5c6cb;
+              color: #721c24;
+              padding: 1em;
+              margin-bottom: 2em;
+              border-radius: 5px;
+            "
+          >
+            <% errors.forEach(error => { %>
+            <p style="margin: 0.5em 0"><%= error.msg %></p>
+            <% }) %>
+          </div>
+          <% } %>
+
+          <form method="POST" action="/contact">
+            <div class="fields">
+              <div class="field half">
+                <label for="name">Név</label>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  value="<%= typeof oldInput !== 'undefined' ? oldInput.name : '' %>"
+                  required
+                />
+              </div>
+              <div class="field half">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  value="<%= typeof oldInput !== 'undefined' ? oldInput.email : '' %>"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="message">Üzenet</label>
+                <textarea name="message" id="message" rows="6" required>
+<%= typeof oldInput !== 'undefined' ? oldInput.message : '' %></textarea
+                >
+              </div>
+            </div>
+            <ul class="actions">
+              <li>
+                <button type="submit" class="button primary">Küldés</button>
+              </li>
+            </ul>
+          </form>
+        </div>
+      </section>
+
+      <%- include('partials/footer') %>
+    </div>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

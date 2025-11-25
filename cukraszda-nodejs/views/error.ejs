@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hiba - Cukrászda</title>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/css/custom.css" />
+  </head>
+  <body class="is-preload">
+    <%- include('partials/header') %>
+
+    <div id="wrapper" class="divided">
+      <section class="wrapper style1 align-center">
+        <div class="inner">
+          <h1>Hiba történt</h1>
+          <p class="major" style="color: #f56a6a"><%= message %></p>
+          <ul class="actions stacked">
+            <li><a href="/" class="button">Vissza a főoldalra</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <%- include('partials/footer') %>
+    </div>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

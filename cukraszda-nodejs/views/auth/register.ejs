@@ -1,0 +1,84 @@
+cat > views/auth/register.ejs << 'EOF'
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Regisztráció - Cukrászda</title>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/css/custom.css" />
+  </head>
+  <body class="is-preload">
+    <%- include('../partials/header') %>
+
+    <div id="wrapper" class="divided">
+      <section class="wrapper style1 align-center">
+        <div class="inner medium">
+          <h1>Regisztráció</h1>
+
+          <% if (errors && errors.length > 0) { %>
+          <div
+            class="box"
+            style="
+              background: #f8d7da;
+              border: 2px solid #f5c6cb;
+              color: #721c24;
+              padding: 1em;
+              margin-bottom: 2em;
+              border-radius: 5px;
+            "
+          >
+            <% errors.forEach(error => { %>
+            <p style="margin: 0.5em 0"><%= error.msg %></p>
+            <% }) %>
+          </div>
+          <% } %>
+
+          <form method="POST" action="/register">
+            <div class="fields">
+              <div class="field">
+                <label for="name">Név</label>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  value="<%= typeof oldInput !== 'undefined' ? oldInput.name : '' %>"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="email">Email cím</label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  value="<%= typeof oldInput !== 'undefined' ? oldInput.email : '' %>"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="password">Jelszó (min. 6 karakter)</label>
+                <input type="password" name="password" id="password" required />
+              </div>
+            </div>
+            <ul class="actions">
+              <li>
+                <button type="submit" class="button primary">
+                  Regisztráció
+                </button>
+              </li>
+            </ul>
+          </form>
+
+          <p>Már van fiókja? <a href="/login">Jelentkezzen be itt!</a></p>
+        </div>
+      </section>
+
+      <%- include('../partials/footer') %>
+    </div>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>
+EOF

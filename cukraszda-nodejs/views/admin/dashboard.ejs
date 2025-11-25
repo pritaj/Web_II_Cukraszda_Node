@@ -1,0 +1,91 @@
+cat > views/admin/dashboard.ejs << 'EOF'
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Cukrászda</title>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/css/custom.css" />
+  </head>
+  <body class="is-preload">
+    <%- include('../partials/header') %>
+
+    <div id="wrapper" class="divided">
+      <section class="wrapper style1 align-center">
+        <div class="inner">
+          <h1>Admin Dashboard</h1>
+          <p>Üdvözöljük az admin felületen!</p>
+
+          <div class="items style1 medium">
+            <section>
+              <span class="icon solid style2 major fa-cookie-bite"></span>
+              <h3>Sütemények</h3>
+              <p><strong><%= stats.sutiCount %></strong> db</p>
+            </section>
+            <section>
+              <span class="icon solid style2 major fa-star"></span>
+              <h3>Díjazott</h3>
+              <p><strong><%= stats.dijazottCount %></strong> db</p>
+            </section>
+            <section>
+              <span class="icon solid style2 major fa-envelope"></span>
+              <h3>Üzenetek</h3>
+              <p><strong><%= stats.messageCount %></strong> db</p>
+            </section>
+            <section>
+              <span class="icon solid style2 major fa-users"></span>
+              <h3>Felhasználók</h3>
+              <p><strong><%= stats.userCount %></strong> fő</p>
+            </section>
+          </div>
+
+          <h2>Legutóbbi üzenetek</h2>
+          <% if (recentMessages && recentMessages.length > 0) { %>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Dátum</th>
+                  <th>Név</th>
+                  <th>Email</th>
+                  <th>Üzenet</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% recentMessages.forEach(msg => { %>
+                <tr>
+                  <td>
+                    <%= new Date(msg.created_at).toLocaleString('hu-HU') %>
+                  </td>
+                  <td><%= msg.name %></td>
+                  <td><%= msg.email %></td>
+                  <td><%= msg.message.substring(0, 50) %>...</td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+          <% } else { %>
+          <p>Nincsenek üzenetek.</p>
+          <% } %>
+
+          <ul class="actions stacked">
+            <li>
+              <a href="/admin/diagrams" class="button primary"
+                >Diagramok megtekintése</a
+              >
+            </li>
+            <li><a href="/sutik" class="button">Sütemények kezelése</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <%- include('../partials/footer') %>
+    </div>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>
+EOF

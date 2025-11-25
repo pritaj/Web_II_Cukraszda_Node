@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Üzenetek - Cukrászda</title>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/css/custom.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="is-preload">
+    <%- include('../partials/header') %>
+
+    <div id="wrapper" class="divided">
+      <section class="wrapper style1 align-center">
+        <div class="inner">
+          <h1>Beérkezett üzenetek</h1>
+
+          <% if (messages && messages.length > 0) { %>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align: left">Név</th>
+                  <th style="text-align: left">Email</th>
+                  <th style="text-align: left">Üzenet</th>
+                  <th style="text-align: left">Küldés ideje</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% messages.forEach(message => { %>
+                <tr>
+                  <td style="font-weight: bold"><%= message.name %></td>
+                  <td><%= message.email %></td>
+                  <td>
+                    <% const truncatedMessage = message.message.length > 100 ?
+                    message.message.substring(0, 100) + '...' : message.message;
+                    %> <%= truncatedMessage %>
+                  </td>
+                  <td>
+                    <%= new Date(message.created_at).toLocaleString('hu-HU', {
+                    year: 'numeric', month: '2-digit', day: '2-digit', hour:
+                    '2-digit', minute: '2-digit' }) %>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+          <% } else { %>
+          <p class="major">Még nincsenek beérkezett üzenetek.</p>
+          <% } %>
+        </div>
+      </section>
+
+      <%- include('../partials/footer') %>
+    </div>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>
