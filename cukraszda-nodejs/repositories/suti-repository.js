@@ -1,4 +1,4 @@
-const db = require("../module/db"); // vagy ahol a pool van
+const db = require("../module/db");
 
 async function getSutiByIdWithRelations(id) {
   // 1) Maga a süti
@@ -25,7 +25,6 @@ async function getSutiByIdWithRelations(id) {
     [id]
   );
 
-  // Laravel: $suti->tartalom, $suti->arak
   suti.tartalom = tartalomRows;
   suti.arak = arRows;
 

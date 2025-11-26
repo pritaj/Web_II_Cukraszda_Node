@@ -1,40 +1,73 @@
-//import "tailwindcss/tailwind.css";
-
 const express = require("express");
+const session = require("express-session");
 const path = require("path");
-const expressLayouts = require("express-ejs-layouts");
+const methodOverride = require("method-override");
+require("dotenv").config();
+
+const sequelize = require("./config/database");
+const { passUserToViews } = require("./middleware/auth");
+const routes = require("./routes");
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-// EJS + layout
+//View engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.use(expressLayouts);
-app.set("layout", "layouts/app");
-app.use(express.static("public"));
 
-// statikus fájlok (css, js, képek, favicon)
-app.use(express.static(path.join(__dirname, "public")));
-
+//Body parserek
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// middleware, hogy user + flash szerű dolgok menjenek a view-ba
-app.use((req, res, next) => {
-  // ide jöhet valódi auth később
-  res.locals.user = null; // vagy { name: 'Rita', role: 'admin' }
-  res.locals.success = null;
-  res.locals.error = null;
-  next();
-});
+//Statikus fájlok, egyéb middleware-ek
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/assets", express.static(path.join(__dirname, "assets")));
+app.use(methodOverride("_method"));
 
-app.get("/", (req, res) => {
-  res.render("home", {
-    title: "Főoldal - Cukrászda",
-    success: null,
-    error: null,
+//Session
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "cukraszda_secret_key_2025",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // 24 óra
+    },
+  })
+);
+
+//User átadása a view-knak
+app.use(passUserToViews);
+
+//ROUTE
+app.use("/", routes);
+
+// handler
+app.use((req, res) => {
+  res.status(404).render("error", {
+    message: "Az oldal nem található.",
   });
 });
 
-app.listen(3000, () => {
-  console.log("http://localhost:3000");
-});
+//Adatbázis + szerver indítás
+async function startServer() {
+  try {
+    await sequelize.authenticate();
+    console.log("✓ Adatbázis kapcsolat rendben.");
+
+    await sequelize.sync();
+    console.log("✓ Adatbázis modellek szinkronizálva.");
+
+    app.listen(PORT, () => {
+      console.log(`✓ Szerver fut a http://localhost:${PORT} címen`);
+      console.log("  Nyomd meg a CTRL+C-t a leállításhoz");
+    });
+  } catch (error) {
+    console.error("✗ Nem sikerült elindítani a szervert:", error);
+    process.exit(1);
+  }
+}
+
+startServer();
+
+module.exports = app;

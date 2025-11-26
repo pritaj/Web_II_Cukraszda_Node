@@ -20,10 +20,10 @@ const sequelize = new Sequelize(
 sequelize
   .authenticate()
   .then(() => {
-    console.log("✓ Adatbázis kapcsolat sikeresen létrejött.");
+    console.log("Adatbázis kapcsolat sikeresen létrejött.");
   })
   .catch((err) => {
-    console.error("✗ Nem sikerült csatlakozni az adatbázishoz:", err);
+    console.error("Nem sikerült csatlakozni az adatbázishoz:", err);
   });
 
 module.exports = sequelize;

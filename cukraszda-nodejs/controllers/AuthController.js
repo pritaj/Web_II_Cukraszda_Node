@@ -1,5 +1,4 @@
-const { User } = require("../models");
-const bcrypt = require("bcryptjs");
+const User = require("../models/User"); 
 const { validationResult } = require("express-validator");
 
 class AuthController {
@@ -7,6 +6,7 @@ class AuthController {
     res.render("auth/login", {
       title: "Bejelentkezés",
       errors: [],
+      oldInput: {},
     });
   }
 
@@ -14,6 +14,7 @@ class AuthController {
     res.render("auth/register", {
       title: "Regisztráció",
       errors: [],
+      oldInput: {},
     });
   }
 
@@ -29,6 +30,9 @@ class AuthController {
 
     try {
       const { name, email, password } = req.body;
+
+      console.log("REGISTER BODY:", req.body);
+
       const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
         return res.render("auth/register", {
@@ -38,11 +42,21 @@ class AuthController {
         });
       }
 
-      const user = await User.create({ name, email, password, role: "user" });
+      
+      const user = await User.create({
+        name,
+        email,
+        password, 
+        role: "user",
+      });
+
+      console.log("MENTVE:", user.toJSON()); // debug
+
       req.session.userId = user.id;
       req.session.userName = user.name;
       req.session.userEmail = user.email;
       req.session.userRole = user.role;
+
       res.redirect("/");
     } catch (error) {
       console.error("Registration error:", error);
@@ -66,6 +80,7 @@ class AuthController {
 
     try {
       const { email, password } = req.body;
+
       const user = await User.findOne({ where: { email } });
       if (!user) {
         return res.render("auth/login", {
@@ -88,6 +103,7 @@ class AuthController {
       req.session.userName = user.name;
       req.session.userEmail = user.email;
       req.session.userRole = user.role;
+
       const returnTo = req.session.returnTo || "/";
       delete req.session.returnTo;
       res.redirect(returnTo);

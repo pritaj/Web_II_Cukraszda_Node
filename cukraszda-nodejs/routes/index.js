@@ -4,14 +4,15 @@ const { body } = require("express-validator");
 const HomeController = require("../controllers/HomeController");
 const AuthController = require("../controllers/AuthController");
 const SutiController = require("../controllers/SutiController");
-const MessageController = require("../controllers/MessageController.js");
+const MessageController = require("../controllers/MessageController");
 const AdminController = require("../controllers/AdminController");
+const DiagramController = require("../controllers/DiagramController");
 const { isAuthenticated, isAdmin, isGuest } = require("../middleware/auth");
 
-// Home routes
+// Home
 router.get("/", HomeController.index);
 
-// Auth routes
+// Auth
 router.get("/login", isGuest, AuthController.showLoginForm);
 router.post(
   "/login",
@@ -39,7 +40,7 @@ router.post(
 
 router.get("/logout", AuthController.logout);
 
-// Sutik routes
+// Sutik
 router.get("/sutik", SutiController.index);
 router.get("/sutik/create", isAdmin, SutiController.create);
 router.post(
@@ -51,6 +52,9 @@ router.post(
   ],
   SutiController.store
 );
+
+router.get("/sutik/:id", SutiController.show);
+
 router.get("/sutik/:id/edit", isAdmin, SutiController.edit);
 router.post(
   "/sutik/:id",
@@ -63,9 +67,9 @@ router.post(
 );
 router.post("/sutik/:id/delete", isAdmin, SutiController.destroy);
 
-// Contact routes
-// Contact routes
+// Contact
 router.get("/contact", MessageController.showContactForm);
+router.get("/kapcsolat", MessageController.showContactForm);
 router.post(
   "/contact",
   [
@@ -75,14 +79,23 @@ router.post(
   ],
   MessageController.store
 );
+router.post(
+  "/kapcsolat",
+  [
+    body("name").notEmpty().withMessage("A név mező kötelező."),
+    body("email").isEmail().withMessage("Érvényes email címet adjon meg."),
+    body("message").notEmpty().withMessage("Az üzenet mező kötelező."),
+  ],
+  MessageController.store
+);
 
-// Messages routes
+// Messages
 router.get("/messages", isAuthenticated, MessageController.index);
 
-// Diagrams - MINDENKI LÁTHATJA
-router.get("/diagrams", AdminController.diagrams);
+// Diagrams
+router.get("/diagrams", DiagramController.index);
 
-// Admin routes
+// Admin
 router.get("/admin", isAdmin, AdminController.dashboard);
 
 module.exports = router;

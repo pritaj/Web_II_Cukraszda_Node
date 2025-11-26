@@ -1,10 +1,10 @@
-cat > views/sutik/edit.ejs << 'EOF'
 <!DOCTYPE html>
 <html lang="hu">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sütemény szerkesztése - Cukrászda</title>
+
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/css/custom.css" />
   </head>
@@ -42,56 +42,71 @@ cat > views/sutik/edit.ejs << 'EOF'
                   type="text"
                   name="nev"
                   id="nev"
-                  value="<%= typeof oldInput !== 'undefined' ? oldInput.nev : suti.nev %>"
+                  value="<%= typeof oldInput !== 'undefined' && oldInput.nev ? oldInput.nev : suti.nev %>"
                   required
                 />
               </div>
+
               <div class="field">
                 <label for="tipus">Típus *</label>
                 <input
                   type="text"
                   name="tipus"
                   id="tipus"
-                  value="<%= typeof oldInput !== 'undefined' ? oldInput.tipus : suti.tipus %>"
+                  value="<%= typeof oldInput !== 'undefined' && oldInput.tipus ? oldInput.tipus : suti.tipus %>"
                   required
                 />
               </div>
+
               <div class="field">
-                <label for="dijazott">
-                  <input type="checkbox" name="dijazott" id="dijazott" <%=
-                  (typeof oldInput !== 'undefined' ? oldInput.dijazott :
-                  suti.dijazott) ? 'checked' : '' %> /> Díjazott (Magyarország
-                  Tortája)
-                </label>
+                <input type="checkbox" id="dijazott" name="dijazott" value="1"
+                <%= suti.dijazott ? 'checked' : '' %> />
+                <label for="dijazott">Díjazott (Magyarország Tortája)</label>
               </div>
+
               <div class="field">
                 <label for="mentes">Mentes (pl: G - gluténmentes)</label>
                 <input
                   type="text"
                   name="mentes"
                   id="mentes"
-                  value="<%= typeof oldInput !== 'undefined' ? oldInput.mentes : (suti.tartalmak && suti.tartalmak.length > 0 ? suti.tartalmak[0].mentes : '') %>"
+                  value="<%= typeof oldInput !== 'undefined' && oldInput.mentes
+                          ? oldInput.mentes
+                          : (suti.tartalmak && suti.tartalmak.length > 0
+                              ? suti.tartalmak[0].mentes
+                              : '') %>"
                 />
               </div>
+
               <div class="field half">
                 <label for="ar_ertek">Ár (Ft)</label>
                 <input
                   type="number"
                   name="ar_ertek"
                   id="ar_ertek"
-                  value="<%= typeof oldInput !== 'undefined' ? oldInput.ar_ertek : (suti.arak && suti.arak.length > 0 ? suti.arak[0].ertek : '') %>"
+                  value="<%= typeof oldInput !== 'undefined' && oldInput.ar_ertek
+                          ? oldInput.ar_ertek
+                          : (suti.arak && suti.arak.length > 0
+                              ? suti.arak[0].ertek
+                              : '') %>"
                 />
               </div>
+
               <div class="field half">
                 <label for="ar_egyseg">Egység (pl: db, szelet, kg)</label>
                 <input
                   type="text"
                   name="ar_egyseg"
                   id="ar_egyseg"
-                  value="<%= typeof oldInput !== 'undefined' ? oldInput.ar_egyseg : (suti.arak && suti.arak.length > 0 ? suti.arak[0].egyseg : '') %>"
+                  value="<%= typeof oldInput !== 'undefined' && oldInput.ar_egyseg
+                          ? oldInput.ar_egyseg
+                          : (suti.arak && suti.arak.length > 0
+                              ? suti.arak[0].egyseg
+                              : '') %>"
                 />
               </div>
             </div>
+
             <ul class="actions">
               <li>
                 <button type="submit" class="button primary">Mentés</button>
@@ -106,7 +121,11 @@ cat > views/sutik/edit.ejs << 'EOF'
     </div>
 
     <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/jquery.scrollex.min.js"></script>
+    <script src="/assets/js/jquery.scrolly.min.js"></script>
+    <script src="/assets/js/browser.min.js"></script>
+    <script src="/assets/js/breakpoints.min.js"></script>
+    <script src="/assets/js/util.js"></script>
     <script src="/assets/js/main.js"></script>
   </body>
 </html>
-EOF

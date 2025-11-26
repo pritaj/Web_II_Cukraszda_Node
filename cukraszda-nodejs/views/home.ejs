@@ -1,82 +1,104 @@
-<!-- views/home.ejs -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/tailwind.css" />
-    <title>Document</title>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <noscript
+      ><link rel="stylesheet" href="/assets/css/noscript.css"
+    /></noscript>
   </head>
-  <body>
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-      <div class="p-6 text-gray-900">
-        <h1 class="text-4xl font-bold mb-6 text-center">
-          Üdvözöljük a Cukrászdánkban! 🧁
-        </h1>
+  <body class="is-preload">
+    <%- include('partials/header') %>
 
-        <div class="grid md:grid-cols-2 gap-6 mb-8">
-          <div>
-            <img
-              src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=800"
-              alt="Cukrászda"
-              class="rounded-lg shadow-md w-full h-64 object-cover"
-            />
-          </div>
-          <div class="flex flex-col justify-center">
-            <h2 class="text-2xl font-semibold mb-4">Rólunk</h2>
-            <p class="text-gray-700 mb-4">
-              Cukrászdánk 1985 óta szolgálja ki kedves vendégeit a legfinomabb
-              házi készítésű süteményekkel. Minden termékünket frissen, kiváló
-              minőségű alapanyagokból készítünk.
-            </p>
-            <p class="text-gray-700">
-              Kínálatunkban megtalálhatók a klasszikus magyar sütemények mellett
-              modern, különleges kreációk is. Büszkék vagyunk arra, hogy több
-              termékünk is díjazott a Magyarország Tortája versenyen!
-            </p>
+    <div id="wrapper" class="divided">
+      <!-- Banner -->
+      <section
+        class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right"
+      >
+        <div class="content">
+          <h1>Üdvözöljük a Cukrászdánkban! 🧁</h1>
+          <p class="major">Kézműves finomságok, amelyek elvarázsolnak.</p>
+          <p>
+            Cukrászdánk 1985 óta szolgálja ki kedves vendégeit a legfinomabb
+            házi készítésű süteményekkel. Minden termékünket frissen, kiváló
+            minőségű alapanyagokból készítünk.
+          </p>
+          <ul class="actions stacked">
+            <li>
+              <a href="/sutik" class="button big wide smooth-scroll-middle"
+                >Tekintse meg kínálatunkat →</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="image">
+          <img
+            src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=800"
+            alt="Cukrászda"
+          />
+        </div>
+      </section>
+
+      <!-- About -->
+      <section
+        class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in"
+      >
+        <div class="content">
+          <h2>Rólunk</h2>
+          <p>
+            Cukrászdánk 1985 óta szolgálja ki kedves vendégeit a legfinomabb
+            házi készítésű süteményekkel. Minden termékünket frissen, kiváló
+            minőségű alapanyagokból készítünk.
+          </p>
+          <p>
+            Kínálatunkban megtalálhatók a klasszikus magyar sütemények mellett
+            modern, különleges kreációk is. Büszkék vagyunk arra, hogy több
+            termékünk is díjazott a Magyarország Tortája versenyen!
+          </p>
+        </div>
+        <div class="image">
+          <img
+            src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=800"
+            alt="Cukrászda belső"
+          />
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="wrapper style1 align-center">
+        <div class="inner">
+          <h2>Miért válasszon minket?</h2>
+          <div class="items style1 medium onscroll-fade-in">
+            <section>
+              <span class="icon solid style2 major fa-trophy"></span>
+              <h3>Díjnyertes sütemények</h3>
+              <p>Több termékünk is elnyerte a Magyarország Tortája címet</p>
+            </section>
+            <section>
+              <span class="icon solid style2 major fa-leaf"></span>
+              <h3>Allergénmentes opciók</h3>
+              <p>Gluténmentes, laktózmentes és vegán sütemények is</p>
+            </section>
+            <section>
+              <span class="icon solid style2 major fa-utensils"></span>
+              <h3>Házi készítésű</h3>
+              <p>Minden nap frissen sütjük termékeinket</p>
+            </section>
           </div>
         </div>
+      </section>
 
-        <div class="bg-blue-50 p-6 rounded-lg mb-8">
-          <h2 class="text-2xl font-semibold mb-4 text-center">
-            Miért válasszon minket?
-          </h2>
-          <div class="grid md:grid-cols-3 gap-4">
-            <div class="text-center">
-              <div class="text-4xl mb-2">🏆</div>
-              <h3 class="font-semibold mb-2">Díjnyertes sütemények</h3>
-              <p class="text-sm text-gray-600">
-                Több termékünk is elnyerte a Magyarország Tortája címet
-              </p>
-            </div>
-            <div class="text-center">
-              <div class="text-4xl mb-2">🌿</div>
-              <h3 class="font-semibold mb-2">Allergénmentes opciók</h3>
-              <p class="text-sm text-gray-600">
-                Gluténmentes, laktózmentes és vegán sütemények is
-              </p>
-            </div>
-            <div class="text-center">
-              <div class="text-4xl mb-2">👨‍🍳</div>
-              <h3 class="font-semibold mb-2">Házi készítésű</h3>
-              <p class="text-sm text-gray-600">
-                Minden nap frissen sütjük termékeit
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="text-center">
-          <!-- Blade: href="{{ route('sutik.index') }}" -->
-          <!-- Node.js / Express: pl. simán /sutik -->
-          <a
-            href="/sutik"
-            class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg"
-          >
-            Tekintse meg kínálatunkat →
-          </a>
-        </div>
-      </div>
+      <%- include('partials/footer') %>
     </div>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/jquery.scrollex.min.js"></script>
+    <script src="/assets/js/jquery.scrolly.min.js"></script>
+    <script src="/assets/js/browser.min.js"></script>
+    <script src="/assets/js/breakpoints.min.js"></script>
+    <script src="/assets/js/util.js"></script>
+    <script src="/assets/js/main.js"></script>
   </body>
 </html>

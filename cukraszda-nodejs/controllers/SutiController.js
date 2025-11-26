@@ -1,50 +1,148 @@
 const { Suti, Tartalom, Ar } = require("../models");
 const { validationResult } = require("express-validator");
+const { Op } = require("sequelize");
 
 class SutiController {
+  // Lista megjelenítése szűrőkkel ÉS LAPOZÁSSAL
   async index(req, res) {
     try {
-      const sutik = await Suti.findAll({
+      const { tipus, mentes, dijazott, page = 1 } = req.query;
+      const limit = 12;
+      const offset = (parseInt(page) - 1) * limit;
+      const where = {};
+
+      if (tipus) where.tipus = tipus;
+      if (dijazott) where.dijazott = true;
+
+      let totalCount;
+      let sutik;
+
+      if (mentes) {
+        const allSutik = await Suti.findAll({
+          where,
+          include: [
+            {
+              model: Tartalom,
+              as: "tartalmak",
+              where: { mentes },
+              required: true,
+            },
+            { model: Ar, as: "arak" },
+          ],
+          order: [["nev", "ASC"]],
+        });
+        totalCount = allSutik.length;
+        sutik = allSutik.slice(offset, offset + limit);
+      } else {
+        const result = await Suti.findAndCountAll({
+          where,
+          include: [
+            { model: Tartalom, as: "tartalmak" },
+            { model: Ar, as: "arak" },
+          ],
+          limit,
+          offset,
+          order: [["nev", "ASC"]],
+          distinct: true,
+        });
+        sutik = result.rows;
+        totalCount = result.count;
+        console.log("Mentes szűrő nélkül:", totalCount);
+      }
+
+      const currentPage = parseInt(page);
+      const totalPages = Math.ceil(totalCount / limit);
+
+      const allSutikForTypes = await Suti.findAll({
+        attributes: ["tipus"],
+        group: ["tipus"],
+      });
+      const tipusok = allSutikForTypes.map((s) => s.tipus);
+
+      res.render("sutik/index", {
+        title: "Sütemények",
+        sutik,
+        tipusok,
+        query: req.query,
+        pagination: {
+          currentPage,
+          totalPages,
+          total: totalCount,
+          firstItem: offset + 1,
+          lastItem: Math.min(offset + limit, totalCount),
+          hasPages: totalPages > 1,
+          onFirstPage: currentPage === 1,
+          hasMorePages: currentPage < totalPages,
+        },
+      });
+    } catch (error) {
+      console.error("Error loading sutik:", error);
+      res.status(500).render("error", { message: "Hiba történt." });
+    }
+  }
+
+  // Egy süti megjelenítése
+  async show(req, res) {
+    try {
+      const suti = await Suti.findByPk(req.params.id, {
         include: [
           { model: Tartalom, as: "tartalmak" },
           { model: Ar, as: "arak" },
         ],
-        order: [["nev", "ASC"]],
       });
 
-      res.render("sutik/index", { title: "Sütemények", sutik });
+      if (!suti) {
+        return res.status(404).render("error", {
+          message: "A sütemény nem található.",
+        });
+      }
+
+      res.render("sutik/show", {
+        title: suti.nev,
+        suti,
+      });
     } catch (error) {
-      console.error("Error loading sutik:", error);
+      console.error("Error loading suti:", error);
       res.status(500).render("error", {
-        message: "Hiba történt a sütemények betöltésekor.",
+        message: "Hiba történt a sütemény betöltésekor.",
       });
     }
   }
 
-  async create(req, res) {
-    res.render("sutik/create", { title: "Új sütemény hozzáadása", errors: [] });
+  // Új süti form
+  create(req, res) {
+    res.render("sutik/create", {
+      title: "Új sütemény",
+      errors: [],
+      oldInput: {},
+    });
   }
 
+  // Új süti mentése
   async store(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.render("sutik/create", {
-        title: "Új sütemény hozzáadása",
+        title: "Új sütemény",
         errors: errors.array(),
         oldInput: req.body,
       });
     }
 
     try {
-      const { nev, tipus, dijazott, mentes, ar_ertek, ar_egyseg } = req.body;
+      const { nev, tipus, dijazott, ar_ertek, ar_egyseg, mentes } = req.body;
+
       const suti = await Suti.create({
         nev,
         tipus,
-        dijazott: dijazott ? true : false,
+        dijazott: dijazott ? true : false, // Magyarország Tortája pipa
       });
 
       if (mentes && mentes.trim() !== "") {
-        await Tartalom.create({ sutiid: suti.id, mentes: mentes });
+        await Tartalom.create({
+          sutiid: suti.id,
+          mentes: mentes,
+        });
       }
 
       if (ar_ertek && ar_egyseg) {
@@ -59,13 +157,14 @@ class SutiController {
     } catch (error) {
       console.error("Error creating suti:", error);
       res.render("sutik/create", {
-        title: "Új sütemény hozzáadása",
+        title: "Új sütemény",
         errors: [{ msg: "Hiba történt a sütemény létrehozásakor." }],
         oldInput: req.body,
       });
     }
   }
 
+  // Szerkesztés form
   async edit(req, res) {
     try {
       const suti = await Suti.findByPk(req.params.id, {
@@ -76,24 +175,26 @@ class SutiController {
       });
 
       if (!suti) {
-        return res
-          .status(404)
-          .render("error", { message: "A sütemény nem található." });
+        return res.status(404).render("error", {
+          message: "A sütemény nem található.",
+        });
       }
 
       res.render("sutik/edit", {
         title: "Sütemény szerkesztése",
         suti,
         errors: [],
+        oldInput: {},
       });
     } catch (error) {
       console.error("Error loading suti for edit:", error);
-      res
-        .status(500)
-        .render("error", { message: "Hiba történt a sütemény betöltésekor." });
+      res.status(500).render("error", {
+        message: "Hiba történt a sütemény betöltésekor.",
+      });
     }
   }
 
+  // Frissítés
   async update(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -112,21 +213,31 @@ class SutiController {
     }
 
     try {
-      const { nev, tipus, dijazott, mentes, ar_ertek, ar_egyseg } = req.body;
+      const { nev, tipus, dijazott, ar_ertek, ar_egyseg, mentes } = req.body;
       const suti = await Suti.findByPk(req.params.id);
 
       if (!suti) {
-        return res
-          .status(404)
-          .render("error", { message: "A sütemény nem található." });
+        return res.status(404).render("error", {
+          message: "A sütemény nem található.",
+        });
       }
 
-      await suti.update({ nev, tipus, dijazott: dijazott ? true : false });
+      await suti.update({
+        nev,
+        tipus,
+        dijazott: dijazott ? true : false, // checkbox mentése
+      });
+
+      // Tartalom (mentes jelölés) újraírva
       await Tartalom.destroy({ where: { sutiid: suti.id } });
       if (mentes && mentes.trim() !== "") {
-        await Tartalom.create({ sutiid: suti.id, mentes: mentes });
+        await Tartalom.create({
+          sutiid: suti.id,
+          mentes: mentes,
+        });
       }
 
+      // Árak újraírva
       await Ar.destroy({ where: { sutiid: suti.id } });
       if (ar_ertek && ar_egyseg) {
         await Ar.create({
@@ -154,24 +265,26 @@ class SutiController {
     }
   }
 
+  // Törlés
   async destroy(req, res) {
     try {
       const suti = await Suti.findByPk(req.params.id);
       if (!suti) {
-        return res
-          .status(404)
-          .render("error", { message: "A sütemény nem található." });
+        return res.status(404).render("error", {
+          message: "A sütemény nem található.",
+        });
       }
 
       await Tartalom.destroy({ where: { sutiid: suti.id } });
       await Ar.destroy({ where: { sutiid: suti.id } });
       await suti.destroy();
+
       res.redirect("/sutik");
     } catch (error) {
       console.error("Error deleting suti:", error);
-      res
-        .status(500)
-        .render("error", { message: "Hiba történt a sütemény törlésekor." });
+      res.status(500).render("error", {
+        message: "Hiba történt a sütemény törlésekor.",
+      });
     }
   }
 }

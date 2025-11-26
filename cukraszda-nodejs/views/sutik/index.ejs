@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+
+    <%- include('../partials/header') %>
+
+    <div id="wrapper" class="divided">
+        <section class="wrapper style1 align-center">
+            <div class="inner">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap;">
+                    <div>
+                        <h1 style="margin: 0;">🧁 Süteménykínálatunk</h1>
+                        <p class="major" style="margin: 0.5rem 0 0 0;">Válasszon ínycsiklandó desszertjeink közül!</p>
+                    </div>
+                    
+                    <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
+                        <div style="margin-top: 1rem;">
+                            <a href="/sutik/create" class="button primary">➕ Új sütemény</a>
+                        </div>
+                    <% } %>
+                </div>
+
+                <div class="box" style="margin-bottom: 3rem;">
+                    <form method="GET" action="/sutik">
+                        <div class="fields">
+                            <div class="field">
+                                <label for="tipus">Típus</label>
+                                <select name="tipus" id="tipus">
+                                    <option value="">Összes</option>
+                                    <% if (typeof tipusok !== 'undefined') { tipusok.forEach(tipus => { %>
+                                        <option value="<%= tipus %>" <%= (typeof query !== 'undefined' && query.tipus == tipus) ? 'selected' : '' %>><%= tipus %></option>
+                                    <% }); } %>
+                                </select>
+                            </div>
+                            
+                            <div class="field">
+                                <label for="mentes">Mentes</label>
+                                <select name="mentes" id="mentes">
+                                    <option value="">Összes</option>
+                                    <option value="G" <%= (typeof query !== 'undefined' && query.mentes == 'G') ? 'selected' : '' %>>Gluténmentes</option>
+                                    <option value="L" <%= (typeof query !== 'undefined' && query.mentes == 'L') ? 'selected' : '' %>>Laktózmentes</option>
+                                    <option value="C" <%= (typeof query !== 'undefined' && query.mentes == 'C') ? 'selected' : '' %>>Cukormentes</option>
+                                </select>
+                            </div>
+                            
+                            <div class="field">
+                                <label for="dijazott">Díjazás</label>
+                                <select name="dijazott" id="dijazott">
+                                    <option value="">Összes</option>
+                                    <option value="1" <%= (typeof query !== 'undefined' && query.dijazott == '1') ? 'selected' : '' %>>Díjazott</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <ul class="actions">
+                            <li><button type="submit" class="button primary">Szűrés</button></li>
+                            <li><a href="/sutik" class="button">Törlés</a></li>
+                        </ul>
+                    </form>
+                </div>
+
+                <% if (sutik && sutik.length > 0) { %>
+                    <div class="items style1 medium">
+                        <% sutik.forEach(suti => { %>
+                            <div>
+                                <div class="inner">
+                                    <span class="icon major" style="font-size: 3rem;">🧁</span>
+                                    <h3><%= suti.nev %></h3>
+                                    <p>
+                                        <strong>Típus:</strong> <%= suti.tipus %><br>
+                                        <% if (suti.dijazott) { %>
+                                            <span style="color: #f56a6a;">⭐ Magyarország Tortája díjas</span><br>
+                                        <% } %>
+                                        <% if (suti.tartalmak && suti.tartalmak.length > 0) { %>
+                                            <strong>Mentes:</strong> 
+                                            <% suti.tartalmak.forEach(t => { %>
+                                                <span style="background: #e8f5e9; color: #2e7d32; padding: 0.2em 0.6em; border-radius: 3px; font-size: 0.85em; margin: 0 0.2em;">
+                                                    <% if (t.mentes == 'G') { %>Gluténmentes<% } else if (t.mentes == 'L') { %>Laktózmentes<% } else if (t.mentes == 'C') { %>Cukormentes<% } else { %><%= t.mentes %><% } %>
+                                                </span>
+                                            <% }); %>
+                                            <br>
+                                        <% } %>
+                                        <% if (suti.arak && suti.arak.length > 0) { %>
+                                            <strong>Árak:</strong><br>
+                                            <% suti.arak.forEach(ar => { %>
+                                                • <%= ar.ertek.toLocaleString('hu-HU') %> Ft / <%= ar.egyseg %><br>
+                                            <% }); %>
+                                        <% } %>
+                                    </p>
+                                    <ul class="actions stacked">
+                                        <li><a href="/sutik/<%= suti.id %>" class="button small">Részletek</a></li>
+                                        <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
+                                            <li><a href="/sutik/<%= suti.id %>/edit" class="button small">✏️ Szerkesztés</a></li>
+                                            <li>
+                                                <form action="/sutik/<%= suti.id %>/delete" method="POST" onsubmit="return confirm('Biztosan törli?');">
+                                                    <button type="submit" class="button small" style="background: #dc3545; width: 100%;">🗑️ Törlés</button>
+                                                </form>
+                                            </li>
+                                        <% } %>
+                                    </ul>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+
+
+                    <% if (typeof pagination !== 'undefined') { %>
+                        <div style="text-align: center; margin: 4rem auto 2rem;">
+                            <ul class="actions special" style="justify-content: center; flex-wrap: wrap;">
+                                <% if (pagination.onFirstPage) { %>
+                                    <li><span class="button disabled" style="opacity: 0.3;">← Előző</span></li>
+                                <% } else { %>
+                                    <li><a href="/sutik?<%= new URLSearchParams({...query, page: pagination.currentPage - 1}).toString() %>" class="button">← Előző</a></li>
+                                <% } %>
+                                
+                                <% for (let p = 1; p <= pagination.totalPages; p++) { %>
+                                    <% if (p === pagination.currentPage) { %>
+                                        <li><span class="button primary"><%= p %></span></li>
+                                    <% } else { %>
+                                        <li><a href="/sutik?<%= new URLSearchParams({...query, page: p}).toString() %>" class="button"><%= p %></a></li>
+                                    <% } %>
+                                <% } %>
+                                
+                                <% if (pagination.hasMorePages) { %>
+                                    <li><a href="/sutik?<%= new URLSearchParams({...query, page: pagination.currentPage + 1}).toString() %>" class="button">Következő →</a></li>
+                                <% } else { %>
+                                    <li><span class="button disabled" style="opacity: 0.3;">Következő →</span></li>
+                                <% } %>
+                            </ul>
+                            <p style="margin-top: 1.5rem; color: #666;">
+                                Megjelenítve: <strong><%= pagination.firstItem %>-<%= pagination.lastItem %></strong> / <strong><%= pagination.total %></strong> sütemény
+                            </p>
+                        </div>
+                    <% } %>
+                    
+                <% } else { %>
+                    <div class="box" style="background: #fff3cd; border: 2px solid #ffc107; color: #856404; padding: 2em; text-align: center;">
+                        <p style="margin: 0; font-size: 1.2em;">🔍 Nincs találat.</p>
+                        <a href="/sutik" class="button small" style="margin-top: 1em;">Összes sütemény</a>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+
+        <%- include('../partials/footer') %>
+    </div>
+
+   <script src="/assets/js/jquery.min.js"></script>
+
+</body>
+</html>
