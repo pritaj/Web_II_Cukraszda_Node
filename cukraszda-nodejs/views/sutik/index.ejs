@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+    <link rel="stylesheet" href="<%= BASE_PATH %>/assets/css/main.css">
+    <noscript><link rel="stylesheet" href="<%= BASE_PATH %>/assets/css/noscript.css" /></noscript>
 </head>
 <body class="is-preload">
 
@@ -23,13 +23,13 @@
                     
                     <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
                         <div style="margin-top: 1rem;">
-                            <a href="/sutik/create" class="button primary">➕ Új sütemény</a>
+                            <a href="<%= BASE_PATH %>/sutik/create" class="button primary">➕ Új sütemény</a>
                         </div>
                     <% } %>
                 </div>
 
                 <div class="box" style="margin-bottom: 3rem;">
-                    <form method="GET" action="/sutik">
+                    <form method="GET" action="<%= BASE_PATH %>/sutik">
                         <div class="fields">
                             <div class="field">
                                 <label for="tipus">Típus</label>
@@ -62,7 +62,7 @@
                         
                         <ul class="actions">
                             <li><button type="submit" class="button primary">Szűrés</button></li>
-                            <li><a href="/sutik" class="button">Törlés</a></li>
+                            <li><a href="<%= BASE_PATH %>/sutik" class="button">Törlés</a></li>
                         </ul>
                     </form>
                 </div>
@@ -96,11 +96,11 @@
                                         <% } %>
                                     </p>
                                     <ul class="actions stacked">
-                                        <li><a href="/sutik/<%= suti.id %>" class="button small">Részletek</a></li>
+                                        <li><a href="<%= BASE_PATH %>/sutik/<%= suti.id %>" class="button small">Részletek</a></li>
                                         <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
-                                            <li><a href="/sutik/<%= suti.id %>/edit" class="button small">✏️ Szerkesztés</a></li>
+                                            <li><a href="<%= BASE_PATH %>/sutik/<%= suti.id %>/edit" class="button small">✏️ Szerkesztés</a></li>
                                             <li>
-                                                <form action="/sutik/<%= suti.id %>/delete" method="POST" onsubmit="return confirm('Biztosan törli?');">
+                                                <form action="<%= BASE_PATH %>/sutik/<%= suti.id %>/delete" method="POST" onsubmit="return confirm('Biztosan törli?');">
                                                     <button type="submit" class="button small" style="background: #dc3545; width: 100%;">🗑️ Törlés</button>
                                                 </form>
                                             </li>
@@ -118,19 +118,19 @@
                                 <% if (pagination.onFirstPage) { %>
                                     <li><span class="button disabled" style="opacity: 0.3;">← Előző</span></li>
                                 <% } else { %>
-                                    <li><a href="/sutik?<%= new URLSearchParams({...query, page: pagination.currentPage - 1}).toString() %>" class="button">← Előző</a></li>
+                                    <li><a href="<%= BASE_PATH %>/sutik?<%= new URLSearchParams({...query, page: pagination.currentPage - 1}).toString() %>" class="button">← Előző</a></li>
                                 <% } %>
                                 
                                 <% for (let p = 1; p <= pagination.totalPages; p++) { %>
                                     <% if (p === pagination.currentPage) { %>
                                         <li><span class="button primary"><%= p %></span></li>
                                     <% } else { %>
-                                        <li><a href="/sutik?<%= new URLSearchParams({...query, page: p}).toString() %>" class="button"><%= p %></a></li>
+                                        <li><a href="<%= BASE_PATH %>/sutik?<%= new URLSearchParams({...query, page: p}).toString() %>" class="button"><%= p %></a></li>
                                     <% } %>
                                 <% } %>
                                 
                                 <% if (pagination.hasMorePages) { %>
-                                    <li><a href="/sutik?<%= new URLSearchParams({...query, page: pagination.currentPage + 1}).toString() %>" class="button">Következő →</a></li>
+                                    <li><a href="<%= BASE_PATH %>/sutik?<%= new URLSearchParams({...query, page: pagination.currentPage + 1}).toString() %>" class="button">Következő →</a></li>
                                 <% } else { %>
                                     <li><span class="button disabled" style="opacity: 0.3;">Következő →</span></li>
                                 <% } %>
@@ -144,7 +144,7 @@
                 <% } else { %>
                     <div class="box" style="background: #fff3cd; border: 2px solid #ffc107; color: #856404; padding: 2em; text-align: center;">
                         <p style="margin: 0; font-size: 1.2em;">🔍 Nincs találat.</p>
-                        <a href="/sutik" class="button small" style="margin-top: 1em;">Összes sütemény</a>
+                        <a href="<%= BASE_PATH %>/sutik" class="button small" style="margin-top: 1em;">Összes sütemény</a>
                     </div>
                 <% } %>
             </div>
@@ -153,7 +153,7 @@
         <%- include('../partials/footer') %>
     </div>
 
-   <script src="/assets/js/jquery.min.js"></script>
+   <script src="<%= BASE_PATH %>/assets/js/jquery.min.js"></script>
 
 </body>
 </html>

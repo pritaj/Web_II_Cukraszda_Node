@@ -114,7 +114,6 @@ class SutiController {
     res.render("sutik/create", {
       title: "Új sütemény",
       errors: [],
-      oldInput: {},
     });
   }
 
@@ -135,7 +134,7 @@ class SutiController {
       const suti = await Suti.create({
         nev,
         tipus,
-        dijazott: dijazott ? true : false, // Magyarország Tortája pipa
+        dijazott: dijazott ? true : false,
       });
 
       if (mentes && mentes.trim() !== "") {
@@ -153,7 +152,9 @@ class SutiController {
         });
       }
 
-      res.redirect("/sutik");
+      // JAVÍTVA: BASE_PATH használata
+      const basePath = req.app.locals.BASE_PATH || "";
+      res.redirect(basePath + "/sutik");
     } catch (error) {
       console.error("Error creating suti:", error);
       res.render("sutik/create", {
@@ -184,7 +185,6 @@ class SutiController {
         title: "Sütemény szerkesztése",
         suti,
         errors: [],
-        oldInput: {},
       });
     } catch (error) {
       console.error("Error loading suti for edit:", error);
@@ -225,10 +225,9 @@ class SutiController {
       await suti.update({
         nev,
         tipus,
-        dijazott: dijazott ? true : false, // checkbox mentése
+        dijazott: dijazott ? true : false,
       });
 
-      // Tartalom (mentes jelölés) újraírva
       await Tartalom.destroy({ where: { sutiid: suti.id } });
       if (mentes && mentes.trim() !== "") {
         await Tartalom.create({
@@ -237,7 +236,6 @@ class SutiController {
         });
       }
 
-      // Árak újraírva
       await Ar.destroy({ where: { sutiid: suti.id } });
       if (ar_ertek && ar_egyseg) {
         await Ar.create({
@@ -247,7 +245,9 @@ class SutiController {
         });
       }
 
-      res.redirect("/sutik");
+      // JAVÍTVA: BASE_PATH használata
+      const basePath = req.app.locals.BASE_PATH || "";
+      res.redirect(basePath + "/sutik");
     } catch (error) {
       console.error("Error updating suti:", error);
       const suti = await Suti.findByPk(req.params.id, {
@@ -279,7 +279,9 @@ class SutiController {
       await Ar.destroy({ where: { sutiid: suti.id } });
       await suti.destroy();
 
-      res.redirect("/sutik");
+      // JAVÍTVA: BASE_PATH használata
+      const basePath = req.app.locals.BASE_PATH || "";
+      res.redirect(basePath + "/sutik");
     } catch (error) {
       console.error("Error deleting suti:", error);
       res.status(500).render("error", {

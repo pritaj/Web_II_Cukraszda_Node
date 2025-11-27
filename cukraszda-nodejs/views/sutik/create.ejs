@@ -4,8 +4,127 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Új sütemény - Cukrászda</title>
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <link rel="stylesheet" href="/css/custom.css" />
+    <!DOCTYPE html>
+    <html lang="hu">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Új sütemény - Cukrászda</title>
+        <link rel="stylesheet" href="<%= BASE_PATH %>/assets/css/main.css" />
+        <link rel="stylesheet" href="<%= BASE_PATH %>/css/custom.css" />
+      </head>
+      <body class="is-preload">
+        <%- include('../partials/header') %>
+
+        <div id="wrapper" class="divided">
+          <section class="wrapper style1 align-center">
+            <div class="inner medium">
+              <h1>Új sütemény hozzáadása</h1>
+
+              <% if (errors && errors.length > 0) { %>
+              <div
+                class="box"
+                style="
+                  background: #f8d7da;
+                  border: 2px solid #f5c6cb;
+                  color: #721c24;
+                  padding: 1em;
+                  margin-bottom: 2em;
+                  border-radius: 5px;
+                "
+              >
+                <% errors.forEach(error => { %>
+                <p style="margin: 0.5em 0"><%= error.msg %></p>
+                <% }) %>
+              </div>
+              <% } %>
+
+              <form method="POST" action="<%= BASE_PATH %>/sutik">
+                <div class="fields">
+                  <div class="field">
+                    <label for="nev">Sütemény neve *</label>
+                    <input
+                      type="text"
+                      name="nev"
+                      id="nev"
+                      value="<%= typeof oldInput !== 'undefined' ? oldInput.nev : '' %>"
+                      required
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="tipus">Típus *</label>
+                    <input
+                      type="text"
+                      name="tipus"
+                      id="tipus"
+                      value="<%= typeof oldInput !== 'undefined' ? oldInput.tipus : '' %>"
+                      required
+                    />
+                  </div>
+
+                  <div class="field">
+                    <input type="checkbox" name="dijazott" id="dijazott"
+                    value="1" <%= typeof oldInput !== 'undefined' &&
+                    oldInput.dijazott ? 'checked' : '' %> />
+                    <label for="dijazott"
+                      >Díjazott (Magyarország Tortája)</label
+                    >
+                  </div>
+
+                  <div class="field">
+                    <label for="mentes">Mentes (pl: G - gluténmentes)</label>
+                    <input
+                      type="text"
+                      name="mentes"
+                      id="mentes"
+                      value="<%= typeof oldInput !== 'undefined' ? oldInput.mentes : '' %>"
+                    />
+                  </div>
+
+                  <div class="field half">
+                    <label for="ar_ertek">Ár (Ft)</label>
+                    <input
+                      type="number"
+                      name="ar_ertek"
+                      id="ar_ertek"
+                      value="<%= typeof oldInput !== 'undefined' ? oldInput.ar_ertek : '' %>"
+                    />
+                  </div>
+
+                  <div class="field half">
+                    <label for="ar_egyseg">Egység (pl: db, szelet, kg)</label>
+                    <input
+                      type="text"
+                      name="ar_egyseg"
+                      id="ar_egyseg"
+                      value="<%= typeof oldInput !== 'undefined' ? oldInput.ar_egyseg : '' %>"
+                    />
+                  </div>
+                </div>
+
+                <ul class="actions">
+                  <li>
+                    <button type="submit" class="button primary">Mentés</button>
+                  </li>
+                  <li>
+                    <a href="<%= BASE_PATH %>/sutik" class="button">Mégse</a>
+                  </li>
+                </ul>
+              </form>
+            </div>
+          </section>
+
+          <%- include('../partials/footer') %>
+        </div>
+
+        <script src="<%= BASE_PATH %>/assets/js/jquery.min.js"></script>
+        <script src="<%= BASE_PATH %>/assets/js/main.js"></script>
+      </body>
+    </html>
+
+    <link rel="stylesheet" href="/app031/assets/css/main.css" />
+    <link rel="stylesheet" href="/app031/css/custom.css" />
   </head>
   <body class="is-preload">
     <%- include('../partials/header') %>
@@ -33,7 +152,7 @@
           </div>
           <% } %>
 
-          <form method="POST" action="/sutik">
+          <form method="POST" action="/app031/sutik">
             <div class="fields">
               <div class="field">
                 <label for="nev">Sütemény neve *</label>
@@ -99,7 +218,7 @@
               <li>
                 <button type="submit" class="button primary">Mentés</button>
               </li>
-              <li><a href="/sutik" class="button">Mégse</a></li>
+              <li><a href="/app031/sutik" class="button">Mégse</a></li>
             </ul>
           </form>
         </div>
@@ -108,7 +227,7 @@
       <%- include('../partials/footer') %>
     </div>
 
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/main.js"></script>
+    <script src="/app031/assets/js/jquery.min.js"></script>
+    <script src="/app031/assets/js/main.js"></script>
   </body>
 </html>

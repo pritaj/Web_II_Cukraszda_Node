@@ -41,6 +41,13 @@ const passUserToViews = (req, res, next) => {
   next();
 };
 
+const path = require("path");
+
+app.use(BASE_PATH, express.static(path.join(__dirname, "public")));
+app.use(BASE_PATH + "/assets", express.static(path.join(__dirname, "assets")));
+
+app.use(BASE_PATH, routes);
+
 module.exports = {
   isAuthenticated,
   isAdmin,

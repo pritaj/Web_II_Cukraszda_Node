@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sütemény szerkesztése - Cukrászda</title>
 
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <link rel="stylesheet" href="/css/custom.css" />
+    <link rel="stylesheet" href="<%= BASE_PATH %>/assets/css/main.css" />
+    <link rel="stylesheet" href="<%= BASE_PATH %>/css/custom.css" />
   </head>
   <body class="is-preload">
     <%- include('../partials/header') %>
@@ -34,7 +34,7 @@
           </div>
           <% } %>
 
-          <form method="POST" action="/sutik/<%= suti.id %>">
+          <form method="POST" action="<%= BASE_PATH %>/sutik/<%= suti.id %>">
             <div class="fields">
               <div class="field">
                 <label for="nev">Sütemény neve *</label>
@@ -111,7 +111,7 @@
               <li>
                 <button type="submit" class="button primary">Mentés</button>
               </li>
-              <li><a href="/sutik" class="button">Mégse</a></li>
+              <li><a href="<%= BASE_PATH %>/sutik" class="button">Mégse</a></li>
             </ul>
           </form>
         </div>
@@ -120,12 +120,12 @@
       <%- include('../partials/footer') %>
     </div>
 
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/jquery.scrollex.min.js"></script>
-    <script src="/assets/js/jquery.scrolly.min.js"></script>
-    <script src="/assets/js/browser.min.js"></script>
-    <script src="/assets/js/breakpoints.min.js"></script>
-    <script src="/assets/js/util.js"></script>
-    <script src="/assets/js/main.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/jquery.min.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/jquery.scrollex.min.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/jquery.scrolly.min.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/browser.min.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/breakpoints.min.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/util.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/main.js"></script>
   </body>
 </html>

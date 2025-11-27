@@ -38,8 +38,8 @@ router.post(
   AuthController.register
 );
 
+router.post("/logout", AuthController.logout);
 router.get("/logout", AuthController.logout);
-
 // Sutik
 router.get("/sutik", SutiController.index);
 router.get("/sutik/create", isAdmin, SutiController.create);
@@ -91,9 +91,11 @@ router.post(
 
 // Messages
 router.get("/messages", isAuthenticated, MessageController.index);
+router.get("/uzenetek", isAuthenticated, MessageController.index);
 
 // Diagrams
 router.get("/diagrams", DiagramController.index);
+router.get("/diagram", DiagramController.index);
 
 // Admin
 router.get("/admin", isAdmin, AdminController.dashboard);

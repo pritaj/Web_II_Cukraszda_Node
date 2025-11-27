@@ -1,4 +1,4 @@
-const User = require("../models/User"); 
+const User = require("../models/User");
 const { validationResult } = require("express-validator");
 
 class AuthController {
@@ -31,8 +31,6 @@ class AuthController {
     try {
       const { name, email, password } = req.body;
 
-      console.log("REGISTER BODY:", req.body);
-
       const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
         return res.render("auth/register", {
@@ -42,22 +40,19 @@ class AuthController {
         });
       }
 
-      
       const user = await User.create({
         name,
         email,
-        password, 
+        password,
         role: "user",
       });
-
-      console.log("MENTVE:", user.toJSON()); // debug
 
       req.session.userId = user.id;
       req.session.userName = user.name;
       req.session.userEmail = user.email;
       req.session.userRole = user.role;
 
-      res.redirect("/");
+      return res.redirect("/app031/");
     } catch (error) {
       console.error("Registration error:", error);
       res.render("auth/register", {
@@ -104,9 +99,7 @@ class AuthController {
       req.session.userEmail = user.email;
       req.session.userRole = user.role;
 
-      const returnTo = req.session.returnTo || "/";
-      delete req.session.returnTo;
-      res.redirect(returnTo);
+      return res.redirect("/app031/");
     } catch (error) {
       console.error("Login error:", error);
       res.render("auth/login", {
@@ -118,11 +111,19 @@ class AuthController {
   }
 
   logout(req, res) {
+    // Session törlése
     req.session.destroy((err) => {
-      if (err) console.error("Logout error:", err);
-      res.redirect("/");
+      if (err) {
+        console.error("Logout error:", err);
+      }
+
+      // DIREKT redirect a főoldalra
+      return res.redirect("/app031/");
     });
   }
-}
 
+  logout(req, res) {
+    console.log("LOGOUT lefutott");
+  }
+}
 module.exports = new AuthController();

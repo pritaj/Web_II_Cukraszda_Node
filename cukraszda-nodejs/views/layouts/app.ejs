@@ -3,23 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/tailwind.css" />
-    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="<%= BASE_PATH %>/css/tailwind.css" />
+    <link rel="stylesheet" href="<%= BASE_PATH %>/assets/css/main.css" />
     <noscript
-      ><link rel="stylesheet" href="/assets/css/noscript.css"
+      ><link rel="stylesheet" href="<%= BASE_PATH %>/assets/css/noscript.css"
     /></noscript>
 
     <title><%= title || 'Cukrászda' %></title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />
-
-    <!-- Story téma CSS -->
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <noscript
-      ><link rel="stylesheet" href="/assets/css/noscript.css"
-    /></noscript>
+    <link rel="icon" type="image/x-icon" href="<%= BASE_PATH %>/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="<%= BASE_PATH %>/favicon.ico"
+    />
 
     <!-- Saját kiegészítő stílusok -->
     <style>
@@ -79,20 +77,24 @@
         <strong>🧁 Cukrászda</strong>
       </div>
       <div>
-        <a href="/">Főoldal</a>
-        <a href="/sutik">Sütemények</a>
-        <a href="/kapcsolat">Kapcsolat</a>
+        <a href="<%= BASE_PATH %>/">Főoldal</a>
+        <a href="<%= BASE_PATH %>/sutik">Sütemények</a>
+        <a href="<%= BASE_PATH %>/kapcsolat">Kapcsolat</a>
 
         <% if (user) { %>
-        <a href="/uzenetek">Üzenetek</a>
-        <a href="/diagram">Diagram</a>
+        <a href="<%= BASE_PATH %>/uzenetek">Üzenetek</a>
+        <a href="<%= BASE_PATH %>/diagram">Diagram</a>
 
         <% if (user.role === 'admin') { %>
-        <a href="/admin">Admin</a>
+        <a href="<%= BASE_PATH %>/admin">Admin</a>
         <% } %>
 
         <span style="color: #666; margin: 0 0.5rem"><%= user.name %></span>
-        <form method="POST" action="/logout" style="display: inline">
+        <form
+          method="POST"
+          action="<%= BASE_PATH %>/logout"
+          style="display: inline"
+        >
           <button
             type="submit"
             style="
@@ -108,8 +110,8 @@
           </button>
         </form>
         <% } else { %>
-        <a href="/login">Bejelentkezés</a>
-        <a href="/register">Regisztráció</a>
+        <a href="<%= BASE_PATH %>/login">Bejelentkezés</a>
+        <a href="<%= BASE_PATH %>/register">Regisztráció</a>
         <% } %>
       </div>
     </div>
@@ -171,12 +173,12 @@
     </div>
 
     <!-- Scripts -->
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/jquery.scrollex.min.js"></script>
-    <script src="/assets/js/jquery.scrolly.min.js"></script>
-    <script src="/assets/js/browser.min.js"></script>
-    <script src="/assets/js/breakpoints.min.js"></script>
-    <script src="/assets/js/util.js"></script>
-    <script src="/assets/js/main.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/jquery.min.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/jquery.scrollex.min.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/jquery.scrolly.min.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/browser.min.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/breakpoints.min.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/util.js"></script>
+    <script src="<%= BASE_PATH %>/assets/js/main.js"></script>
   </body>
 </html>

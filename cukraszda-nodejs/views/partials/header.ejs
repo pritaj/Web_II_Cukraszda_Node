@@ -12,42 +12,48 @@
   "
 >
   <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap">
-    <a href="/" style="text-decoration: none; color: #f56a6a; font-weight: bold"
+    <a
+      href="/app031/"
+      style="text-decoration: none; color: #f56a6a; font-weight: bold"
       >Főoldal</a
     >
     <a
-      href="/sutik"
+      href="/app031/sutik"
       style="text-decoration: none; color: #f56a6a; font-weight: bold"
       >Sütemények</a
     >
     <a
-      href="/diagrams"
+      href="/app031/diagrams"
       style="text-decoration: none; color: #f56a6a; font-weight: bold"
       >Diagramok</a
     >
     <a
-      href="/contact"
+      href="/app031/contact"
       style="text-decoration: none; color: #f56a6a; font-weight: bold"
       >Kapcsolat</a
     >
 
     <% if (typeof user !== 'undefined' && user) { %>
     <a
-      href="/messages"
+      href="/app031/messages"
       style="text-decoration: none; color: #f56a6a; font-weight: bold"
       >Üzenetek</a
     >
 
     <% if (user.role === 'admin') { %>
     <a
-      href="/admin"
+      href="/app031/admin"
       style="text-decoration: none; color: #f56a6a; font-weight: bold"
       >Admin</a
     >
     <% } %>
 
     <span style="color: #666; margin-left: 1rem"> <%= user.name %> </span>
-    <form action="/logout" method="GET" style="display: inline; margin: 0">
+    <form
+      action="/app031/logout"
+      method="GET"
+      style="display: inline; margin: 0"
+    >
       <button
         type="submit"
         style="
@@ -64,12 +70,12 @@
     </form>
     <% } else { %>
     <a
-      href="/login"
+      href="/app031/login"
       style="text-decoration: none; color: #f56a6a; font-weight: bold"
       >Bejelentkezés</a
     >
     <a
-      href="/register"
+      href="/app031/register"
       style="text-decoration: none; color: #f56a6a; font-weight: bold"
       >Regisztráció</a
     >

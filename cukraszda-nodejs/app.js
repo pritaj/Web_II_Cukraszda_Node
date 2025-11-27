@@ -9,8 +9,10 @@ const { passUserToViews } = require("./middleware/auth");
 const routes = require("./routes");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4031;
+const BASE_PATH = "/app031";
 
+app.locals.BASE_PATH = BASE_PATH;
 //View engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -20,8 +22,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Statikus fájlok, egyéb middleware-ek
-app.use(express.static(path.join(__dirname, "public")));
-app.use("/assets", express.static(path.join(__dirname, "assets")));
+app.use(BASE_PATH, express.static(path.join(__dirname, "public")));
+app.use(
+  BASE_PATH + "/assets",
+  express.static(path.join(__dirname, "public/assets"))
+);
+
 app.use(methodOverride("_method"));
 
 //Session
@@ -40,8 +46,8 @@ app.use(
 app.use(passUserToViews);
 
 //ROUTE
+app.use(BASE_PATH, routes);
 app.use("/", routes);
-
 // handler
 app.use((req, res) => {
   res.status(404).render("error", {

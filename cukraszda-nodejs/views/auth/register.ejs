@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Regisztráció - Cukrászda</title>
-    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/app031/assets/css/main.css" />
   </head>
   <body class="is-preload">
     <%- include('../partials/header') %>
@@ -32,7 +32,7 @@
           </div>
           <% } %>
 
-          <form method="POST" action="/register">
+          <form method="POST" action="/app031/register">
             <div class="fields">
               <div class="field">
                 <label for="name">Név</label>
@@ -68,19 +68,21 @@
             </ul>
           </form>
 
-          <p>Már van fiókja? <a href="/login">Jelentkezzen be itt!</a></p>
+          <p>
+            Már van fiókja? <a href="/app031/login">Jelentkezzen be itt!</a>
+          </p>
         </div>
       </section>
 
       <%- include('../partials/footer') %>
     </div>
 
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/jquery.scrollex.min.js"></script>
-    <script src="/assets/js/jquery.scrolly.min.js"></script>
-    <script src="/assets/js/browser.min.js"></script>
-    <script src="/assets/js/breakpoints.min.js"></script>
-    <script src="/assets/js/util.js"></script>
-    <script src="/assets/js/main.js"></script>
+    <script src="/app031/assets/js/jquery.min.js"></script>
+    <script src="/app031/assets/js/jquery.scrollex.min.js"></script>
+    <script src="/app031/assets/js/jquery.scrolly.min.js"></script>
+    <script src="/app031/assets/js/browser.min.js"></script>
+    <script src="/app031/assets/js/breakpoints.min.js"></script>
+    <script src="/app031/assets/js/util.js"></script>
+    <script src="/app031/assets/js/main.js"></script>
   </body>
 </html>

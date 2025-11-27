@@ -4,10 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <noscript
-      ><link rel="stylesheet" href="/assets/css/noscript.css"
-    /></noscript>
+    <link rel="stylesheet" href="/app031/assets/css/main.css" />
+    <link rel="stylesheet" href="/app031/css/custom.css" />
   </head>
   <body class="is-preload">
     <%- include('partials/header') %>
@@ -27,7 +25,9 @@
           </p>
           <ul class="actions stacked">
             <li>
-              <a href="/sutik" class="button big wide smooth-scroll-middle"
+              <a
+                href="<%= BASE_PATH %>/app031/sutik"
+                class="button big wide smooth-scroll-middle"
                 >Tekintse meg kínálatunkat →</a
               >
             </li>
@@ -93,12 +93,12 @@
       <%- include('partials/footer') %>
     </div>
 
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/jquery.scrollex.min.js"></script>
-    <script src="/assets/js/jquery.scrolly.min.js"></script>
-    <script src="/assets/js/browser.min.js"></script>
-    <script src="/assets/js/breakpoints.min.js"></script>
-    <script src="/assets/js/util.js"></script>
-    <script src="/assets/js/main.js"></script>
+    <script src="/app031/assets/js/jquery.min.js"></script>
+    <script src="/app031/assets/js/jquery.scrollex.min.js"></script>
+    <script src="/app031/assets/js/jquery.scrolly.min.js"></script>
+    <script src="/app031/assets/js/browser.min.js"></script>
+    <script src="/app031/assets/js/breakpoints.min.js"></script>
+    <script src="/app031/assets/js/util.js"></script>
+    <script src="/app031/assets/js/main.js"></script>
   </body>
 </html>

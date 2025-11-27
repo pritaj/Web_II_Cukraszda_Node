@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bejelentkezés - Cukrászda</title>
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <link rel="stylesheet" href="/css/custom.css" />
+    <link rel="stylesheet" href="/app031/assets/css/main.css" />
+    <link rel="stylesheet" href="/app031/css/custom.css" />
   </head>
   <body class="is-preload">
     <%- include('../partials/header') %>
@@ -33,7 +33,7 @@
           </div>
           <% } %>
 
-          <form method="POST" action="/login">
+          <form method="POST" action="/app031/login">
             <div class="fields">
               <div class="field">
                 <label for="email">Email cím</label>
@@ -59,14 +59,16 @@
             </ul>
           </form>
 
-          <p>Még nincs fiókja? <a href="/register">Regisztráljon itt!</a></p>
+          <p>
+            Még nincs fiókja? <a href="/app031/register">Regisztráljon itt!</a>
+          </p>
         </div>
       </section>
 
       <%- include('../partials/footer') %>
     </div>
 
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/main.js"></script>
+    <script src="/app031/assets/js/jquery.min.js"></script>
+    <script src="/app031/assets/js/main.js"></script>
   </body>
 </html>
